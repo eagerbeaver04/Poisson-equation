@@ -3,26 +3,31 @@
 #include "List.h"
 #include <vector>
 
-template<class T>
 class Sparse
 {
 private:
 	size_t size;
-	std::vector<std::unique_ptr<List<T>>> rows;
+	std::vector<std::unique_ptr<List>> rows;
 public:
-	Sparse() : size(0), rows({}) {};
+	Sparse() : size(0), rows() {};
 	explicit Sparse(size_t n)
 	{
 		size = n;
 		for (size_t i = 0; i < n; i++)
-            rows.emplace_back(std::make_unique<List<T>>());
+            rows.emplace_back(std::make_unique<List>());
 	}
-	void add(size_t row, size_t column, T value)
+	void add(size_t row, size_t column, double value)
 	{
 		if (row > size || column > size)
 			std::cerr << "Oversize!" << std::endl;
 		rows[row]->add(column, value);
 	}
+    void add_node(Node* node, size_t row)
+    {
+        if (row > size || node->get_column() > size)
+            std::cerr << "Oversize!" << std::endl;
+        rows[row]->add(node->get_column(), node->get_value());
+    }
 	void print()
 	{
 		for (size_t i = 0; i < size; i++)
@@ -36,15 +41,7 @@ public:
     {
         size = A.size;
         for(size_t i =0;i < size; i++)
-        {
-            rows.emplace_back(std::make_unique<List<T>>());
-            auto node = A.rows[i].get();
-            while(node)
-            {
-                rows[i]->push_back(i, node->get_value());
-                node = node->get_next();
-            }
-        }
+            rows.push_back(std::make_unique<List>(*A.rows[i]));
     }
     Sparse(Sparse&& A) noexcept(true)
     {
@@ -53,31 +50,25 @@ public:
             rows.emplace_back(std::move(A.rows[i]));
     }
 
-    Sparse<T> transpose()
+    /*Sparse transpose()
     {
-        Sparse<T> new_sparse(size);
+        Sparse new_sparse(size);
         for (int i = 0; i < size; i++)
         {
-            auto node = rows[i].get();
-            while (node)
-            {
-                new_sparse->add(node->column, i, node->value);
-                node = node->next;
-            }
+            
         }
         return new_sparse;
-    }
+    }*/
 
-    friend  Sparse<T> operator + (const Sparse<T>& A1, const Sparse<T>& A2);
+    friend Sparse operator + (const Sparse& A1, const Sparse& A2);
 };
 
-template<class T>
-Sparse<T> operator + (const Sparse<T>& A1, const Sparse<T>& A2)
+Sparse operator + (const Sparse& A1, const Sparse& A2)
 {
-    size_t size = A1.n;
-    if (size != A2.n)
+    size_t size = A1.size;
+    if (size != A2.size)
         std::cerr << "Different sizes" << std::endl;
-    Sparse<T> new_sparse(size);
+    Sparse new_sparse(size);
     /*
      *
      */
