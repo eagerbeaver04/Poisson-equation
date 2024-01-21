@@ -175,7 +175,7 @@ std::vector<double> operator*(const Sparse &A1, const std::vector<double> &b) {
     return new_vec;
 }
 
-Sparse operator *(const std::vector<double>& a, const std::vector<double>& b)
+Sparse vec_mul(const std::vector<double>& a, const std::vector<double>& b)
 {
     size_t size = a.size();
     if (size != b.size())
@@ -189,6 +189,15 @@ Sparse operator *(const std::vector<double>& a, const std::vector<double>& b)
             new_sparse.add(i, j, value * b[j]);
     }
     return new_sparse;
+}
+
+double scalar_mul(const std::vector<double>& a, const std::vector<double>& b)
+{
+    double value=0;
+    for(double i : a)
+        for(double j : b)
+            value+=i*j;
+    return value;
 }
 
 double Sparse::norm() const

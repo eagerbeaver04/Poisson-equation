@@ -42,4 +42,5 @@ public:
     friend std::vector<double> operator *(const Sparse &A1,const std::vector<double>& b);
 };
 
-Sparse operator *(const std::vector<double>& a,const std::vector<double>& b);
+Sparse vec_mul(const std::vector<double>& a,const std::vector<double>& b);
+double scalar_mul(const std::vector<double>& a,const std::vector<double>& b);

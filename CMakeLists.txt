@@ -14,4 +14,10 @@ add_executable(PoissonEquation
         Node.cpp
         List.cpp
         Sparse.cpp
-        Iterator.cpp)
+        Iterator.cpp
+        "Cholesky decomposition/CholeskyDecomposition.h"
+        "Cholesky decomposition/CholeskyDecomposition.cpp"
+        PreconditionedConjugateGradientsMethod/PCG.h
+        PreconditionedConjugateGradientsMethod/PCG.cpp
+        PoissonEquation/PoissonEquation.h
+        PoissonEquation/PoissonEquation.cpp)
