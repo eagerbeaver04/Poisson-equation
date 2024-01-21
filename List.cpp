@@ -27,7 +27,7 @@ void List::push_back(size_t column, double data) {
 
 void List::print(size_t size) {
     if (head)
-        head->print(size);
+        head->print_all(size);
     else
         for (size_t i = 0; i < size; i++)
             std::cout << double() << " ";

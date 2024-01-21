@@ -1,7 +1,7 @@
-oisson's equation.sln
-Poisson's equation.vcxproj
-Poisson's equation.vcxproj.filters
-Poisson's equation.vcxproj.user
+PoissonEquation.sln
+PoissonEquation.vcxproj
+PoissonEquation.vcxproj.filters
+PoissonEquation.vcxproj.user
 .vs
 x64
 /cmake-build-debug/

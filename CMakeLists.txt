@@ -13,4 +13,5 @@ add_executable(PoissonEquation
         Sparse.h
         Node.cpp
         List.cpp
-        Sparse.cpp)
+        Sparse.cpp
+        Iterator.cpp)

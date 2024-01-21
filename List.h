@@ -18,4 +18,10 @@ public:
     void print(size_t size);
 
     void add(size_t column, double data);
+
+    Iterator begin() { return Iterator(head.get()); }
+
+    Iterator rend() { return Iterator(nullptr); }
+
+    Iterator end() { return Iterator(tail); }
 };

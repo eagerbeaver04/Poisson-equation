@@ -1,6 +1,6 @@
 #include "Node.h"
 
-void Node::print(size_t size) {
+void Node::print_all(size_t size) {
     Node *tmp = this;
     size_t prev_column = -1;
     size_t current_column;
@@ -14,6 +14,11 @@ void Node::print(size_t size) {
     }
     for (size_t i = current_column; i < size - 1; i++)
         std::cout << double() << " ";
+}
+
+void Node::print() const
+{
+    std::cout << value << " ";
 }
 
 void Node::add(size_t column_, double data) {
@@ -40,4 +45,30 @@ void Node::add(size_t column_, double data) {
     }
     auto newNode = std::make_unique<Node>(column_, data);
     tmp->next = std::move(newNode);
+}
+
+void Node::get_next(Iterator &it)
+{
+    Node* tmp = nullptr;
+    if(next)
+        tmp = next.get();
+    it.setValue(tmp);
+}
+
+Iterator Node::create_begin_iterator()
+{
+    return Iterator(this);
+}
+
+Iterator Node::create_rend_iterator()
+{
+    return Iterator(nullptr);
+}
+
+Iterator Node::create_end_iterator()
+{
+    auto node = this;
+    while(node->next)
+        node = node->next.get();
+    return Iterator(node);
 }
