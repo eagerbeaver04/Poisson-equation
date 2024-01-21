@@ -21,7 +21,7 @@ void Node::print() const
     std::cout << value << " ";
 }
 
-void Node::add(size_t column_, double data) {
+void Node::add(size_t column_, double data, Node*& tail) {
     Node *tmp = this;
     Node *tmp_next = next.get();
 
@@ -45,6 +45,7 @@ void Node::add(size_t column_, double data) {
     }
     auto newNode = std::make_unique<Node>(column_, data);
     tmp->next = std::move(newNode);
+    tail = tmp->next.get();
 }
 
 void Node::get_next(Iterator &it)

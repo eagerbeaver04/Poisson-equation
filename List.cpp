@@ -44,5 +44,5 @@ void List::add(size_t column, double data) {
         newNode->set_next(std::move(head));
         head = std::move(newNode);
     } else
-        head->add(column, data);
+        head->add(column, data, tail);
 }

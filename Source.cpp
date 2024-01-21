@@ -8,6 +8,7 @@ int main() {
     s1.add(0, 1, 1);
     s1.add(2, 0, 1);
     s1.print();
-    //auto s2 =s1.transpose();
+    auto s2 = s1.transpose();
+    s2.print();
     return 0;
 }

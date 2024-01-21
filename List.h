@@ -21,7 +21,7 @@ public:
 
     Iterator begin() { return Iterator(head.get()); }
 
-    Iterator rend() { return Iterator(nullptr); }
+    Iterator end() { return Iterator(nullptr); }
 
-    Iterator end() { return Iterator(tail); }
+    Iterator rend() { return Iterator(tail); }
 };

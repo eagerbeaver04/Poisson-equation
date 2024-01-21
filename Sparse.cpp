@@ -29,10 +29,13 @@ Sparse::Sparse(Sparse &&A) noexcept(true) {
         rows.emplace_back(std::move(A.rows[i]));
 }
 
-Sparse Sparse::transpose() const {
+Sparse Sparse::transpose() const
+{
     Sparse new_sparse(size);
-    for (int i = 0; i < size; i++) {
-
+    for (int i = 0; i < size; i++)
+    {
+        for(auto it = rows[i]->begin(); it!=rows[i]->end(); it++)
+            new_sparse.add((*it).get_column(), i, (*it).get_value());
     }
     return new_sparse;
 }

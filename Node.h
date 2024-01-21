@@ -29,7 +29,7 @@ public:
 
     void print() const;
 
-    void add(size_t column_, double data);
+    void add(size_t column_, double data, Node*& tail);
 
     void get_next(Iterator& it);
 
