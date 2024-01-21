@@ -25,6 +25,8 @@ public:
 
     double get_value() const { return value; }
 
+    double& get_value() { return value; }
+
     void print_all(size_t size);
 
     void print() const;

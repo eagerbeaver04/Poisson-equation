@@ -24,7 +24,8 @@ void Node::print() const
 void Node::add(size_t column_, double data, Node*& tail) {
     Node *tmp = this;
     Node *tmp_next = next.get();
-
+    if (column == 0 && column_ == 0)
+        std::cout << "";
     while (tmp_next != nullptr) {
         if (tmp->column <= column_ && tmp_next->column >= column_) {
             if (tmp->column == column_) {
@@ -36,12 +37,16 @@ void Node::add(size_t column_, double data, Node*& tail) {
                 return;
             }
             auto newNode = std::make_unique<Node>(column_, data);
-            newNode->next = std::move(tmp->next);
             tmp->next = std::move(newNode);
             return;
         }
         tmp = tmp->next.get();
         tmp_next = tmp->next.get();
+    }
+    if (column_ == column)
+    {
+        tmp->value += data;
+        return;
     }
     auto newNode = std::make_unique<Node>(column_, data);
     tmp->next = std::move(newNode);

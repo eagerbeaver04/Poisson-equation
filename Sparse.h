@@ -7,6 +7,7 @@ class Sparse {
 private:
     size_t size;
     std::vector<std::unique_ptr<List>> rows;
+    void clear();
 public:
     Sparse() : size(0), rows() {};
 
@@ -24,6 +25,12 @@ public:
 
     Sparse transpose() const;
 
+    Sparse& operator =(const Sparse& A1);
+    Sparse& operator =(Sparse&& A1) noexcept(true) ;
     friend Sparse operator+(const Sparse &A1, const Sparse &A2);
+    friend Sparse operator-(const Sparse &A1, const Sparse &A2);
+    friend Sparse operator*(double alpha, const Sparse &A2);
+    friend Sparse operator*(const Sparse &A1, double alpha);
+
 };
 
