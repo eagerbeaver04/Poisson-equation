@@ -15,6 +15,7 @@ public:
 	void set_next(std::unique_ptr<Node<T>> data) { next = std::move(data); };
 	const Node<T>* get_next() const { return next.get(); }
 	size_t get_column() { return column; }
+    T get_value() { return value; }
 	void print(size_t size)
 	{
 		Node<T>* tmp = this;
