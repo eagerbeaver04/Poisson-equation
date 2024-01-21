@@ -66,5 +66,6 @@ public:
     Iterator operator++(int i) { Iterator tmp = *this; ++(*this); return tmp; };
     friend bool operator == (const Iterator& a, const Iterator& b) { return (a.ptr == b.ptr); };
     friend bool operator != (const Iterator& a, const Iterator& b) { return (a.ptr != b.ptr); };
+    bool is_null() {return ptr == nullptr;}
     void print();
 };

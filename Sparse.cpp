@@ -95,3 +95,69 @@ Sparse operator*(double alpha, const Sparse &A2) {
 Sparse operator*(const Sparse &A1, double alpha) {
     return alpha * A1;
 }
+
+Sparse& Sparse::operator+=(const Sparse& A)
+{
+    if (size != A.size)
+        std::cerr << "Different sizes" << std::endl;
+    for (size_t i = 0; i < size; i++)
+        for (auto it = A.rows[i]->begin(); it != A.rows[i]->end(); it++)
+            add(i, (*it).get_column(), (*it).get_value());
+    return *this;
+}
+
+Sparse& Sparse::operator-=(const Sparse& A)
+{
+    if (size != A.size)
+        std::cerr << "Different sizes" << std::endl;
+    for (size_t i = 0; i < size; i++)
+        for (auto it = A.rows[i]->begin(); it != A.rows[i]->end(); it++)
+            add(i, (*it).get_column(), -1 * (*it).get_value());
+    return *this;
+}
+
+Sparse& Sparse::operator*=(double alpha)
+{
+    for (int i = 0; i < size; i++)
+        for (auto it = rows[i]->begin(); it != rows[i]->end(); it++)
+            (*it).get_value() *= alpha;
+    return *this;
+}
+
+Sparse operator *(const Sparse &A1, const Sparse &A2)
+{
+    size_t size = A1.size;
+    if (size != A2.size)
+        std::cerr << "Different size" << std::endl;
+    auto new_sparse = Sparse(size);
+    auto At = A2.transpose();
+    double value;
+    List* list1;
+    List* list2;
+    for(size_t i =0; i < size; i++)
+    {
+        list1 = A1.rows[i].get();
+        for(size_t j=0; j < size; j++)
+        {
+            value = 0;
+            list2 = At.rows[j].get();
+            auto it1 = list1->begin();
+            auto it2 = list2->begin();
+            while (!it1.is_null() && !it2.is_null())
+            {
+                while (it1 != list1->end() && (*it2).get_column() > (*it1).get_column())
+                    it1++;
+                if (!it1.is_null())
+                    if (it1->get_column() == it2->get_column())
+                    {
+                        value += it1->get_value() * it2->get_value();
+                        it1++;
+                    }
+                it2++;
+            }
+            if (value != 0)
+                new_sparse.add(i, j, value);
+        }
+    }
+    return new_sparse;
+}

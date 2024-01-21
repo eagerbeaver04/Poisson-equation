@@ -29,8 +29,13 @@ public:
     Sparse& operator =(Sparse&& A1) noexcept(true) ;
     friend Sparse operator+(const Sparse &A1, const Sparse &A2);
     friend Sparse operator-(const Sparse &A1, const Sparse &A2);
-    friend Sparse operator*(double alpha, const Sparse &A2);
-    friend Sparse operator*(const Sparse &A1, double alpha);
+    friend Sparse operator*(double alpha, const Sparse &A);
+    friend Sparse operator*(const Sparse &A, double alpha);
+    Sparse& operator+=(const Sparse &A);
+    Sparse& operator-=(const Sparse &A);
+    Sparse& operator*=(double alpha);
+
+    friend Sparse operator *(const Sparse &A1, const Sparse &A2);
 
 };
 
