@@ -59,11 +59,14 @@ private:
     void next();
 public:
     explicit Iterator(pointer ptr_) : ptr(ptr_) {};
+    Iterator() : ptr(nullptr) {};
+    Iterator(const Iterator& it) : ptr(it.ptr) {};
     void setValue(Node* node) { ptr = node; };
     reference operator*() { return *ptr; };
     pointer operator ->() { return ptr; };
     Iterator& operator++ () { next(); return *this; };
     Iterator operator++(int i) { Iterator tmp = *this; ++(*this); return tmp; };
+    Iterator& operator =(const Iterator& it) { ptr = it.ptr; return *this; }
     friend bool operator == (const Iterator& a, const Iterator& b) { return (a.ptr == b.ptr); };
     friend bool operator != (const Iterator& a, const Iterator& b) { return (a.ptr != b.ptr); };
     bool is_null() {return ptr == nullptr;}

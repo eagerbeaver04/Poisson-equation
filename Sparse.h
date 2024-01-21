@@ -2,6 +2,7 @@
 
 #include "List.h"
 #include <vector>
+#include <cmath>
 
 class Sparse {
 private:
@@ -25,6 +26,8 @@ public:
 
     Sparse transpose() const;
 
+    double norm() const;
+
     Sparse& operator =(const Sparse& A1);
     Sparse& operator =(Sparse&& A1) noexcept(true) ;
     friend Sparse operator+(const Sparse &A1, const Sparse &A2);
@@ -36,6 +39,7 @@ public:
     Sparse& operator*=(double alpha);
 
     friend Sparse operator *(const Sparse &A1, const Sparse &A2);
-
+    friend std::vector<double> operator *(const Sparse &A1,const std::vector<double>& b);
 };
 
+Sparse operator *(const std::vector<double>& a,const std::vector<double>& b);

@@ -14,7 +14,7 @@ void Sparse::add(size_t row, size_t column, double value) {
 
 void Sparse::print() {
     for (size_t i = 0; i < size; i++)
-        if(rows[i])
+        if (rows[i])
             rows[i]->print(size);
 }
 
@@ -38,15 +38,13 @@ Sparse Sparse::transpose() const {
     return new_sparse;
 }
 
-void Sparse::clear()
-{
-    for(size_t i =0; i <size;i++)
+void Sparse::clear() {
+    for (size_t i = 0; i < size; i++)
         rows[i].reset();
     rows.clear();
 }
 
-Sparse& Sparse::operator =(const Sparse& A)
-{
+Sparse &Sparse::operator=(const Sparse &A) {
     clear();
     size = A.size;
     for (size_t i = 0; i < size; i++)
@@ -54,7 +52,7 @@ Sparse& Sparse::operator =(const Sparse& A)
     return *this;
 }
 
-Sparse& Sparse::operator =(Sparse&& A) noexcept(true) {
+Sparse &Sparse::operator=(Sparse &&A) noexcept(true) {
     clear();
     size = A.size;
     for (size_t i = 0; i < size; i++)
@@ -96,8 +94,7 @@ Sparse operator*(const Sparse &A1, double alpha) {
     return alpha * A1;
 }
 
-Sparse& Sparse::operator+=(const Sparse& A)
-{
+Sparse &Sparse::operator+=(const Sparse &A) {
     if (size != A.size)
         std::cerr << "Different sizes" << std::endl;
     for (size_t i = 0; i < size; i++)
@@ -106,8 +103,7 @@ Sparse& Sparse::operator+=(const Sparse& A)
     return *this;
 }
 
-Sparse& Sparse::operator-=(const Sparse& A)
-{
+Sparse &Sparse::operator-=(const Sparse &A) {
     if (size != A.size)
         std::cerr << "Different sizes" << std::endl;
     for (size_t i = 0; i < size; i++)
@@ -116,40 +112,37 @@ Sparse& Sparse::operator-=(const Sparse& A)
     return *this;
 }
 
-Sparse& Sparse::operator*=(double alpha)
-{
+Sparse &Sparse::operator*=(double alpha) {
     for (int i = 0; i < size; i++)
         for (auto it = rows[i]->begin(); it != rows[i]->end(); it++)
             (*it).get_value() *= alpha;
     return *this;
 }
 
-Sparse operator *(const Sparse &A1, const Sparse &A2)
-{
+Sparse operator*(const Sparse &A1, const Sparse &A2) {
     size_t size = A1.size;
     if (size != A2.size)
         std::cerr << "Different size" << std::endl;
     auto new_sparse = Sparse(size);
     auto At = A2.transpose();
     double value;
-    List* list1;
-    List* list2;
-    for(size_t i =0; i < size; i++)
-    {
+    List *list1;
+    List *list2;
+    Iterator begin1, end1, begin2, it1, it2;
+    for (size_t i = 0; i < size; i++) {
         list1 = A1.rows[i].get();
-        for(size_t j=0; j < size; j++)
-        {
+        begin1 = list1->begin();
+        end1 = list1->end();
+        for (size_t j = 0; j < size; j++) {
             value = 0;
-            list2 = At.rows[j].get();
-            auto it1 = list1->begin();
-            auto it2 = list2->begin();
-            while (!it1.is_null() && !it2.is_null())
-            {
-                while (it1 != list1->end() && (*it2).get_column() > (*it1).get_column())
+            begin2 = At.rows[j]->begin();
+            it1 = begin1;
+            it2 = begin2;
+            while (!it1.is_null() && !it2.is_null()) {
+                while (it1 != end1 && (*it2).get_column() > (*it1).get_column())
                     it1++;
                 if (!it1.is_null())
-                    if (it1->get_column() == it2->get_column())
-                    {
+                    if (it1->get_column() == it2->get_column()) {
                         value += it1->get_value() * it2->get_value();
                         it1++;
                     }
@@ -160,4 +153,54 @@ Sparse operator *(const Sparse &A1, const Sparse &A2)
         }
     }
     return new_sparse;
+}
+
+std::vector<double> operator*(const Sparse &A1, const std::vector<double> &b) {
+    size_t size = b.size();
+    if (size != A1.size)
+        std::cerr << "Different size " << std::endl;
+    std::vector<double> new_vec(size);
+    double value;
+    Iterator begin;
+    Iterator end;
+    for (size_t i = 0; i < size; i++)
+    {
+        value=0;
+        begin = A1.rows[i]->begin();
+        end = A1.rows[i]->end();
+        for (auto it = begin; it != end; it++)
+            value+= (*it).get_value() * b[(*it).get_column()];
+        new_vec[i] = value;
+    }
+    return new_vec;
+}
+
+Sparse operator *(const std::vector<double>& a, const std::vector<double>& b)
+{
+    size_t size = a.size();
+    if (size != b.size())
+        std::cerr << "Different size " << std::endl;
+    double value;
+    Sparse new_sparse(size);
+    for(size_t i=0; i < size; i ++)
+    {
+        value = a[i];
+        for(size_t j =0; j < size; j++)
+            new_sparse.add(i, j, value * b[j]);
+    }
+    return new_sparse;
+}
+
+double Sparse::norm() const
+{
+    Iterator begin, end, it;
+    double norma=0;
+    for(size_t i=0; i < size; i++)
+    {
+       begin = rows[i]->begin();
+       end = rows[i]->end();
+       for(it= begin; it!=end; it++)
+            norma+= pow((*it).get_value(),2);
+    }
+    return sqrt(norma);
 }
