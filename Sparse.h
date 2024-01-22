@@ -46,6 +46,7 @@ public:
 
     Sparse chol();
     Sparse ichol();
+    Sparse chol(double droptol);
 };
 
 Sparse vec_mul(const std::vector<double>& a,const std::vector<double>& b);

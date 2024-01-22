@@ -39,5 +39,8 @@ int main() {
     auto s5_ = l5 * l5t;
     std::cout << "s5_: " << std::endl;
     s5_.print();
+    auto l7 = s6.chol(0.1);
+    std::cout << "l7: " << std::endl;
+    l7.print();
     return 0;
 }
