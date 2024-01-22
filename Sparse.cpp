@@ -163,77 +163,106 @@ std::vector<double> operator*(const Sparse &A1, const std::vector<double> &b) {
     double value;
     Iterator begin;
     Iterator end;
-    for (size_t i = 0; i < size; i++)
-    {
-        value=0;
+    for (size_t i = 0; i < size; i++) {
+        value = 0;
         begin = A1.rows[i]->begin();
         end = A1.rows[i]->end();
         for (auto it = begin; it != end; it++)
-            value+= (*it).get_value() * b[(*it).get_column()];
+            value += (*it).get_value() * b[(*it).get_column()];
         new_vec[i] = value;
     }
     return new_vec;
 }
 
-Sparse vec_mul(const std::vector<double>& a, const std::vector<double>& b)
-{
+Sparse vec_mul(const std::vector<double> &a, const std::vector<double> &b) {
     size_t size = a.size();
     if (size != b.size())
         std::cerr << "Different size " << std::endl;
     double value;
     Sparse new_sparse(size);
-    for(size_t i=0; i < size; i ++)
-    {
+    for (size_t i = 0; i < size; i++) {
         value = a[i];
-        for(size_t j =0; j < size; j++)
+        for (size_t j = 0; j < size; j++)
             new_sparse.add(i, j, value * b[j]);
     }
     return new_sparse;
 }
 
-double scalar_mul(const std::vector<double>& a, const std::vector<double>& b)
-{
-    double value=0;
-    for(double i : a)
-        for(double j : b)
-            value+=i*j;
-    return value;
-}
-
-double Sparse::norm() const
-{
+double Sparse::norm() const {
     Iterator begin, end, it;
-    double norma=0;
-    for(size_t i=0; i < size; i++)
-    {
-       begin = rows[i]->begin();
-       end = rows[i]->end();
-       for(it= begin; it!=end; it++)
-            norma+= pow((*it).get_value(),2);
+    double norma = 0;
+    for (size_t i = 0; i < size; i++) {
+        begin = rows[i]->begin();
+        end = rows[i]->end();
+        for (it = begin; it != end; it++)
+            norma += pow((*it).get_value(), 2);
     }
     return sqrt(norma);
 }
 
-Sparse::Sparse(const std::vector<std::vector<double>>& A)
-{
+Sparse::Sparse(const std::vector<std::vector<double>> &A) {
     size = A[0].size();
     for (size_t i = 0; i < size; i++)
         rows.push_back(std::make_unique<List>());
-    for(size_t i =0; i < size; i++)
-        for(size_t j=0; j < size; j++)
-            if(A[i][j] !=0)
-                add(i,j,A[i][j]);
+    for (size_t i = 0; i < size; i++)
+        for (size_t j = 0; j < size; j++)
+            if (A[i][j] != 0)
+                add(i, j, A[i][j]);
 }
 
-void Sparse::find_by_column(Iterator& begin, Iterator& end, Iterator& it, size_t column)
-{
-    for (it = begin; it != end; it++)
-    {
-        if (it->get_column() > column){
+void Sparse::find_by_column(Iterator &begin, Iterator &end, Iterator &it, size_t column) {
+    for (it = begin; it != end; it++) {
+        if (it->get_column() > column) {
             it = end;
             return;
         }
         if (it->get_column() == column)
             return;
     }
+}
+
+std::vector<double> Sparse::gauss_down(const std::vector<double>& b)
+{
+    std::vector<double> solution(size);
+    if(size != b.size())
+    {
+        std::cerr << "Different size " << std::endl;
+        return solution;
+    }
+    double val;
+    Iterator begin,rend,it;
+    for(size_t i =0; i< size; i++)
+    {
+        val=0;
+        begin = rows[i]->begin();
+        rend = rows[i]->rend();
+        for(it = begin; it!= rend; it++)
+            val+=it->get_value() * solution[it->get_column()];
+        if(!it.is_null())
+            solution[i] = (b[i] - val)/ it->get_value();
+    }
+    return solution;
+}
+
+std::vector<double> Sparse::gauss_up(const std::vector<double>& b)
+{
+    std::vector<double> solution(size);
+    if(size != b.size())
+    {
+        std::cerr << "Different size " << std::endl;
+        return solution;
+    }
+    double val;
+    Iterator begin,rend,it;
+    for(int i = size-1; i>=0; i--)
+    {
+        val=0;
+        begin = rows[i]->begin();
+        rend = rows[i]->rend();
+        for(it = begin; it!= rend; it++)
+            val+=it->get_value() * solution[it->get_column()];
+        if(!begin.is_null())
+            solution[i] = (b[i] - val)/ begin->get_value();
+    }
+    return solution;
 }

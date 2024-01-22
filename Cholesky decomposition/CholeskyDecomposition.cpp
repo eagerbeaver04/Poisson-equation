@@ -156,10 +156,9 @@ Sparse Sparse::chol(double droptol) {
 
                         if (itJ != end2) {
                             itJ->get_value() += current_val;
-                            if(itJ->get_value() <= droptol)
+                            if (itJ->get_value() <= droptol)
                                 itJ->get_value() = 0;
-                        }
-                        else
+                        } else
                             new_sparse.add(i, j, current_val);
 
                     }

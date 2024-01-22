@@ -47,7 +47,10 @@ public:
     Sparse chol();
     Sparse ichol();
     Sparse chol(double droptol);
+
+    std::vector<double> gauss_down(const std::vector<double>& b);// for lower triangular matrix
+    std::vector<double> gauss_up(const std::vector<double>& b);// for upper triangular matrix
 };
 
 Sparse vec_mul(const std::vector<double>& a,const std::vector<double>& b);
-double scalar_mul(const std::vector<double>& a,const std::vector<double>& b);
+

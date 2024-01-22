@@ -19,4 +19,6 @@ add_executable(PoissonEquation
         PreconditionedConjugateGradientsMethod/PCG.h
         PreconditionedConjugateGradientsMethod/PCG.cpp
         PoissonEquation/PoissonEquation.h
-        PoissonEquation/PoissonEquation.cpp)
+        PoissonEquation/PoissonEquation.cpp
+        Matrix.h
+        Matrix.cpp)
