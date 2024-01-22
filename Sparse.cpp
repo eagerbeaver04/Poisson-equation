@@ -213,3 +213,28 @@ double Sparse::norm() const
     }
     return sqrt(norma);
 }
+
+Sparse::Sparse(const std::vector<std::vector<double>>& A)
+{
+    size = A[0].size();
+    for (size_t i = 0; i < size; i++)
+        rows.push_back(std::make_unique<List>());
+    for(size_t i =0; i < size; i++)
+        for(size_t j=0; j < size; j++)
+            if(A[i][j] !=0)
+                add(i,j,A[i][j]);
+}
+
+/*
+void Sparse::find_by_column(Iterator& begin, Iterator& end, Iterator& it, size_t column)
+{
+    for (it = begin; it != end; it++)
+    {
+        if (it->get_column() > column){
+            it = end;
+            return;
+        }
+        if (it->get_column() == column)
+            return;
+    }
+}*/

@@ -40,6 +40,8 @@ public:
     Iterator create_end_iterator();
 
     Iterator create_rend_iterator();
+
+    void reset_after_this();
 };
 
 class Iterator
@@ -71,4 +73,5 @@ public:
     friend bool operator != (const Iterator& a, const Iterator& b) { return (a.ptr != b.ptr); };
     bool is_null() {return ptr == nullptr;}
     void print();
+    void reset_after_this();
 };
