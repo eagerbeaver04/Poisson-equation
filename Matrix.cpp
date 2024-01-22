@@ -56,3 +56,11 @@ vector mul(double f, const vector& a)
 {
     return mul(a, f);
 }
+
+double norm(const vector& a)
+{
+    double s = 0;
+    for (auto i : a)
+        s += pow(i, 2);
+    return sqrt(s);
+}

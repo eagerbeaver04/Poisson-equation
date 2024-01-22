@@ -24,4 +24,6 @@ public:
     Iterator end() { return Iterator(nullptr); }
 
     Iterator rend() { return Iterator(tail); }
+
+    void reset_after_ptr(Iterator& it);
 };

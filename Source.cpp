@@ -1,5 +1,5 @@
 #include "Sparse.h"
-
+#include "PreconditionedConjugateGradientsMethod/PCG.h"
 int main() {
     Sparse s1(4);
     s1.add(0, 1, 1);
@@ -26,21 +26,38 @@ int main() {
                                 {1.227868629033308, 1.892472502016853,1.935905955356345, 1.035805712013819 ,1.768389255171490},
                                 {0.521174654533141, 1.308557881359714, 1.035805712013819, 1.062148946273321 ,1.070186101501958},
                                 {1.296203817908845, 2.079159067654516 ,1.768389255171490 ,1.070186101501958 ,1.728645295621314 } };
-    Sparse s6(A);
+    Sparse sparse_A(A);
     std::cout << "s6: " << std::endl;
-    s6.print();
-    auto l5 = s6.ichol();
+    sparse_A.print();
+    auto l5 = sparse_A.ichol();
     std::cout << "l5: " << std::endl;
     l5.print();
-    auto l6 = s6.chol();
+    auto l6 = sparse_A.chol();
     std::cout << "l6: " << std::endl;
     l6.print();
     auto l5t = l5.transpose();
     auto s5_ = l5 * l5t;
     std::cout << "s5_: " << std::endl;
     s5_.print();
-    auto l7 = s6.chol(0.1);
+    auto l7 = sparse_A.chol(0.1);
     std::cout << "l7: " << std::endl;
     l7.print();
+
+    std::cout << "pcg " << std::endl;
+    size_t N = 5;
+    std::vector<double> absolut_solution(N);
+    for (int i = 0;i < N;i++)
+        absolut_solution[i] = 1;
+    std::vector<double> b = sparse_A*absolut_solution;
+    std::vector<double> x_0(N, 0); x_0[0] = 1;
+    double epsilon = 1e-1;
+    Sparse L0 = sparse_A.chol();
+
+    auto solution_pcg_pred = pcg_pred(sparse_A, b, x_0, epsilon, L0);
+    std::cout <<"solution_pcg_pred: ";
+    print(solution_pcg_pred);
+    auto  solution_pcg = pcg(sparse_A, b, x_0, epsilon);
+    std::cout <<"solution_pcg: ";
+    print(solution_pcg);
     return 0;
 }

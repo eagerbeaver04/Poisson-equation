@@ -49,7 +49,7 @@ Sparse Sparse::ichol() {
         end1 = new_sparse.rows[i]->end();
         for (it1 = begin1; it1 != end1; it1++)
             if (it1->get_column() == i)
-                it1.reset_after_this();
+                new_sparse.rows[i]->reset_after_ptr(it1);
     }
     return new_sparse;
 }
@@ -108,7 +108,7 @@ Sparse Sparse::chol() {
         end1 = new_sparse.rows[i]->end();
         for (it1 = begin1; it1 != end1; it1++)
             if (it1->get_column() == i)
-                it1.reset_after_this();
+                new_sparse.rows[i]->reset_after_ptr(it1);
     }
     return new_sparse;
 }
@@ -171,7 +171,8 @@ Sparse Sparse::chol(double droptol) {
         end1 = new_sparse.rows[i]->end();
         for (it1 = begin1; it1 != end1; it1++)
             if (it1->get_column() == i)
-                it1.reset_after_this();
+                new_sparse.rows[i]->reset_after_ptr(it1);
+
     }
     return new_sparse;
 }
