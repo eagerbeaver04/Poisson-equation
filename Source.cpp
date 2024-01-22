@@ -32,5 +32,12 @@ int main() {
     auto l5 = s6.ichol();
     std::cout << "l5: " << std::endl;
     l5.print();
+    auto l6 = s6.chol();
+    std::cout << "l6: " << std::endl;
+    l6.print();
+    auto l5t = l5.transpose();
+    auto s5_ = l5 * l5t;
+    std::cout << "s5_: " << std::endl;
+    s5_.print();
     return 0;
 }

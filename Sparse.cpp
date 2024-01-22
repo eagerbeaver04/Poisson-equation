@@ -225,7 +225,6 @@ Sparse::Sparse(const std::vector<std::vector<double>>& A)
                 add(i,j,A[i][j]);
 }
 
-/*
 void Sparse::find_by_column(Iterator& begin, Iterator& end, Iterator& it, size_t column)
 {
     for (it = begin; it != end; it++)
@@ -237,4 +236,4 @@ void Sparse::find_by_column(Iterator& begin, Iterator& end, Iterator& it, size_t
         if (it->get_column() == column)
             return;
     }
-}*/
+}
