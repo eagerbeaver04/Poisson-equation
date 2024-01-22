@@ -79,14 +79,13 @@ Iterator Node::create_end_iterator()
     return Iterator(node);
 }
 
-Node* Node::reset_after_this()
+void Node::reset_after_this()
 {
     next.reset();
     next = nullptr;
-    return this;
 }
 
-Node* Iterator::reset_after_this()
+void Iterator::reset_after_this()
 {
-    return ptr->reset_after_this();
+    ptr->reset_after_this();
 }

@@ -49,5 +49,6 @@ void List::add(size_t column, double data) {
 
 void List::reset_after_ptr(Iterator& it)
 {
-    tail = it.reset_after_this();
+    tail = &(*it);
+    it.reset_after_this();
 }

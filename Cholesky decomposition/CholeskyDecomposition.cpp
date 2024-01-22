@@ -1,6 +1,7 @@
 #include "Sparse.h"
 
-Sparse Sparse::ichol() {
+Sparse Sparse::ichol()
+{
     size_t n = size;
     Sparse new_sparse(*this);
     Iterator it1, it2, itJ, begin1, end1, begin2, end2;
@@ -54,7 +55,8 @@ Sparse Sparse::ichol() {
     return new_sparse;
 }
 
-Sparse Sparse::chol() {
+Sparse Sparse::chol()
+{
     size_t n = size;
     Sparse new_sparse(*this);
     Iterator it1, it2, itJ, begin1, end1, begin2, end2;
@@ -113,7 +115,8 @@ Sparse Sparse::chol() {
     return new_sparse;
 }
 
-Sparse Sparse::chol(double droptol) {
+Sparse Sparse::chol(double droptol)
+{
     size_t n = size;
     Sparse new_sparse(*this);
     Iterator it1, it2, itJ, begin1, end1, begin2, end2;
