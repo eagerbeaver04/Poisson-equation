@@ -1,7 +1,8 @@
 #include "PCG.h"
 
-vector gauss(Sparse &L, Sparse &Lt, const vector &b) {
-    return Lt.gauss_up(L.gauss_down(b));
+vector gauss(Sparse &L, Sparse &Lt, const vector &b)
+{
+    return Lt.gauss_up( L.gauss_down(b));
 }
 
 vector pcg(const Sparse &A, const vector &b,
@@ -25,7 +26,6 @@ vector pcg(const Sparse &A, const vector &b,
         p = sub(eps, mul(p, beta));
         k++;
     }
-    std::cout << "K: " << k << std::endl;
     return x;
 }
 
@@ -57,7 +57,6 @@ vector pcg_pred(const Sparse &A, const vector &b,
         prev_eps = eps;
         k++;
     }
-    std::cout << "K_pred: " << k << std::endl;
     return x;
 }
 

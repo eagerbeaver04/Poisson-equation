@@ -49,10 +49,13 @@ int main() {
     for (int i = 0;i < N;i++)
         absolut_solution[i] = 1;
     std::vector<double> b = sparse_A*absolut_solution;
-    std::vector<double> x_0(N, 0); x_0[0] = 1;
-    double epsilon = 1e-1;
+    std::vector<double> x_0(N, 10); x_0[0] = 1;
+    double epsilon = 1e-5;
     Sparse L0 = sparse_A.chol();
-
+    std::cout << "L0: " << std::endl;
+    L0.print();
+    std::cout << "L1: " << std::endl;
+    L0.transpose().print();
     auto solution_pcg_pred = pcg_pred(sparse_A, b, x_0, epsilon, L0);
     std::cout <<"solution_pcg_pred: ";
     print(solution_pcg_pred);

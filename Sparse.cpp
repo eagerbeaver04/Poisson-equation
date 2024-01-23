@@ -253,13 +253,14 @@ std::vector<double> Sparse::gauss_up(const std::vector<double>& b)
         return solution;
     }
     double val;
-    Iterator begin,rend,it;
+    Iterator begin,end,it,it2;
     for(int i = size-1; i>=0; i--)
-    {
+    {//?????????????????????????/
         val=0;
         begin = rows[i]->begin();
-        rend = rows[i]->rend();
-        for(it = begin; it!= rend; it++)
+        it2 = begin; it2++;
+        end = rows[i]->end();
+        for(it = it2; it!= end; it++)
             val+=it->get_value() * solution[it->get_column()];
         if(!begin.is_null())
             solution[i] = (b[i] - val)/ begin->get_value();
