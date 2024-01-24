@@ -267,3 +267,31 @@ std::vector<double> Sparse::gauss_up(const std::vector<double>& b)
     }
     return solution;
 }
+
+std::vector<double> Sparse::covert_to_vector()
+{
+    size_t vec_size = std::pow(size, 2);
+    std::vector<double> vec(vec_size);
+    Iterator begin ,end, it1;
+    size_t k=0;
+    size_t current_column;
+    for(size_t i=0; i < size; i++)
+    {
+        begin = rows[i]->begin();
+        end = rows[i]->end();
+        current_column =0;
+        for(it1 = begin; it1!=end;it1++)
+        {
+            for(size_t j =current_column+1; j < it1->get_column(); j++)
+            {
+                vec[k] = 0;
+                k++;
+            }
+            current_column = it1->get_column();
+            vec[k] = it1->get_value();
+            k++;
+        }
+    }
+    return vec;
+}
+

@@ -27,22 +27,11 @@ int main() {
                                 {0.521174654533141, 1.308557881359714, 1.035805712013819, 1.062148946273321 ,1.070186101501958},
                                 {1.296203817908845, 2.079159067654516 ,1.768389255171490 ,1.070186101501958 ,1.728645295621314 } };
     Sparse sparse_A(A);
-    std::cout << "s6: " << std::endl;
+    std::cout << "sparse_A: " << std::endl;
     sparse_A.print();
-    auto l5 = sparse_A.ichol();
-    std::cout << "l5: " << std::endl;
-    l5.print();
-    auto l6 = sparse_A.chol();
-    std::cout << "l6: " << std::endl;
-    l6.print();
-    auto l5t = l5.transpose();
-    auto s5_ = l5 * l5t;
-    std::cout << "s5_: " << std::endl;
-    s5_.print();
-    auto l7 = sparse_A.chol(0.1);
-    std::cout << "l7: " << std::endl;
-    l7.print();
 
+    std::vector<double> vec_as_mat = sparse_A.covert_to_vector();
+    print(vec_as_mat);
     std::cout << "pcg " << std::endl;
     size_t N = 5;
     std::vector<double> absolut_solution(N);
