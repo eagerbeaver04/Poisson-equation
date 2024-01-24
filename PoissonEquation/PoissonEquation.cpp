@@ -76,3 +76,39 @@ Sparse five_diag(size_t N)
     }
     return S;
 }
+
+std::vector<std::vector<double>> reverse(const std::vector<double>& a)
+{
+    size_t size = a.size();
+    size_t n = sqrt(size);int k, j;
+    std::vector < std::vector <double> > A(n, std::vector <double>(n));
+    for (int i = 0; i < size; i++)
+    {
+        k = i / n;
+        j = i % n;
+        A[k][j] = a[i];
+    }
+    return A;
+}
+
+std::vector<double> f(double A, double B, size_t N)
+{
+    return F(A,B,N).covert_to_vector();
+}
+
+std::vector<double> u(double A, double B, size_t N)
+{
+    size_t size = pow(N, 2);
+    std::vector<double> vector_mat(size);
+    std::vector<std::vector<double>> matrix = U(A, B, N);
+    int k = 0;
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < N; j++)
+        {
+            vector_mat[k] = matrix[i][j];
+            k++;
+        }
+    }
+    return vector_mat;
+}
