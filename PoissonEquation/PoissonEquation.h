@@ -7,7 +7,7 @@ double accurate_solution(double x, double y);//for values only on edge
 Sparse five_diag(size_t n);
 
 Sparse F(double A, double B, size_t N);
-Sparse U(double A, double B, size_t N);
+std::vector<std::vector<double>> U(double A, double B, size_t N);
 
 std::vector<std::vector<double>> reverse(const std::vector<double>& a);
 
