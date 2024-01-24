@@ -14,14 +14,14 @@ vector pcg(const Sparse &A, const vector &b,
     double alpha = 0;
     double beta = 0;
     double mistake = epsilon + 1;
-    double norm0 = norm(eps);
     int k = 0;
-    while (mistake > epsilon) {
+    while (mistake > epsilon)
+    {
         q = A * p;
         alpha = scalar_mul(eps, p) / scalar_mul(q, p);
         x = sum(x, mul(p, alpha));
         eps = sub(eps, mul(q, alpha));
-        mistake = norm(eps)/norm0;
+        mistake = norm(eps);
         beta = scalar_mul(eps, q) / scalar_mul(p, q);
         p = sub(eps, mul(p, beta));
         k++;

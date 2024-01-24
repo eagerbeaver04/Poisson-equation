@@ -10,9 +10,8 @@ void print(const vector& a)
 double scalar_mul(const vector& a, const vector& b)
 {
     double value = 0;
-    for (double i: a)
-        for (double j: b)
-            value += i * j;
+    for (size_t i=0; i <a.size(); i++)
+            value += a[i] * b[i];
     return value;
 }
 
