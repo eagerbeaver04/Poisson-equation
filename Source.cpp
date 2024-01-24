@@ -11,7 +11,7 @@ double accurate_solution_example(double x, double y)//for values only on edge
 }
 
 int main() {
-    size_t N = 25;
+    size_t N = 100;
     Sparse S = five_diag(N);
     double A = 0;
     double B = M_PI / 10;
