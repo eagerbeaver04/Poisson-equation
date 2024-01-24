@@ -20,7 +20,8 @@ Sparse Sparse::ichol()
             end2 = new_sparse.rows[i]->end();
 
             find_by_column(begin2, end2, it1, k);
-            it1->get_value() /= val;
+            if(!it1.is_null())
+                it1->get_value() /= val;
         }
 
         for (size_t j = k + 1; j < size; j++) {
@@ -71,12 +72,14 @@ Sparse Sparse::chol()
         val = sqrt(it1->get_value());
         it1->get_value() = val;
 
-        for (size_t i = k + 1; i < size; i++) {
+        for (size_t i = k + 1; i < size; i++)
+        {
             begin2 = new_sparse.rows[i]->begin();
             end2 = new_sparse.rows[i]->end();
 
             find_by_column(begin2, end2, it1, k);
-            it1->get_value() /= val;
+            if(!it1.is_null())
+                it1->get_value() /= val;
         }
 
         for (size_t j = k + 1; j < size; j++) {
@@ -136,7 +139,8 @@ Sparse Sparse::chol(double droptol)
             end2 = new_sparse.rows[i]->end();
 
             find_by_column(begin2, end2, it1, k);
-            it1->get_value() /= val;
+            if(!it1.is_null())
+                it1->get_value() /= val;
         }
 
         for (size_t j = k + 1; j < size; j++) {

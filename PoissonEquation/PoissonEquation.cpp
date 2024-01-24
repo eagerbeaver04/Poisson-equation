@@ -1,16 +1,8 @@
 #include "PoissonEquation.h"
 
-double function(double x, double y)
-{
-    return -2 * sin(x) * cos(y);// example
-}
-
-double accurate_solution(double x, double y)
-{
-    return sin(x) * cos(y);
-}
-
-Sparse F(double A, double B, size_t N)
+Sparse F(double A, double B, size_t N,
+         const std::function<double(double, double)>& function,
+         const std::function<double(double, double)>& accurate_solution)
 {
     double h = (B - A) / (N+1) ;
     Sparse new_sparse(N);
@@ -38,7 +30,8 @@ Sparse F(double A, double B, size_t N)
     return new_sparse;
 }
 
-std::vector<std::vector<double>> U(double A, double B, size_t N)// for checking
+std::vector<std::vector<double>> U(double A, double B, size_t N,
+                                   const std::function<double(double, double)>& accurate_solution)// for checking
 {
     double h = (B - A) / (N + 1);
     std::vector < std::vector<double> > f(N, std::vector <double>(N));
@@ -91,16 +84,19 @@ std::vector<std::vector<double>> reverse(const std::vector<double>& a)
     return A;
 }
 
-std::vector<double> f(double A, double B, size_t N)
+std::vector<double> f(double A, double B, size_t N,
+                      const std::function<double(double, double)>& function,
+                      const std::function<double(double, double)>& accurate_solution)
 {
-    return F(A,B,N).covert_to_vector();
+    return F(A,B,N, function ,accurate_solution).covert_to_vector();
 }
 
-std::vector<double> u(double A, double B, size_t N)
+std::vector<double> u(double A, double B, size_t N,
+                      const std::function<double(double, double)>& accurate_solution)
 {
     size_t size = pow(N, 2);
     std::vector<double> vector_mat(size);
-    std::vector<std::vector<double>> matrix = U(A, B, N);
+    std::vector<std::vector<double>> matrix = U(A, B, N, accurate_solution);
     int k = 0;
     for (int i = 0; i < N; i++)
     {
@@ -111,4 +107,23 @@ std::vector<double> u(double A, double B, size_t N)
         }
     }
     return vector_mat;
+}
+
+std::vector<double> solve_poisson_equation_with_precondition(Sparse& matrix, Sparse& L0,
+                                           double A, double B, size_t N,
+                                           const std::vector<double>& x_0, double eps,
+                                           const std::function<double(double, double)>& function,
+                                           const std::function<double(double, double)>& accurate_solution)
+{
+    return pcg_pred(matrix, f(A,B, N, function, accurate_solution),
+                    x_0, eps, L0);
+}
+
+std::vector<double> solve_poisson_equation(Sparse& matrix,double A, double B, size_t N,
+                                           const std::vector<double>& x_0, double eps,
+                                           const std::function<double(double, double)>& function,
+                                           const std::function<double(double, double)>& accurate_solution)
+{
+    return pcg(matrix, f(A,B, N, function, accurate_solution),
+                    x_0, eps);
 }

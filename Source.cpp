@@ -1,55 +1,49 @@
 #include "Sparse.h"
-#include "PreconditionedConjugateGradientsMethod/PCG.h"
-int main() {
-    Sparse s1(4);
-    s1.add(0, 1, 1);
-    s1.add(0, 2, 2);
-    s1.add(3, 3, 3);
-    s1.add(0, 1, 1);
-    s1.add(2, 0, 1);
-    s1.print();
-    auto s2 = s1.transpose();
-    std::cout << "s2: " << std::endl;
-    s2.print();
-    auto s3 = s1 + s2;
-    auto s4 = s3;
-    std::cout << "s3: " << std::endl;
-    s3.print();
-    std::cout << "s4: " << std::endl;
-    s4.print();
-    s2 = s2 * s3;
-    std::cout << "s2: " << std::endl;
-    s2.print();
+#include "PoissonEquation/PoissonEquation.h"
 
-    std::vector<std::vector<double>> A = {{1.395367621832617, 1.793836757626301, 1.227868629033308, 0.521174654533141, 1.296203817908845},
-                                {1.793836757626301, 2.964575485749597, 1.892472502016853, 1.308557881359714, 2.079159067654516 },
-                                {1.227868629033308, 1.892472502016853,1.935905955356345, 1.035805712013819 ,1.768389255171490},
-                                {0.521174654533141, 1.308557881359714, 1.035805712013819, 1.062148946273321 ,1.070186101501958},
-                                {1.296203817908845, 2.079159067654516 ,1.768389255171490 ,1.070186101501958 ,1.728645295621314 } };
-    Sparse sparse_A(A);
-    std::cout << "sparse_A: " << std::endl;
-    sparse_A.print();
+double function_example(double x, double y)
+{
+    return -2 * sin(x) * cos(y);// example
+}
 
-    std::vector<double> vec_as_mat = sparse_A.covert_to_vector();
-    print(vec_as_mat);
-    std::cout << "pcg " << std::endl;
-    size_t N = 5;
-    std::vector<double> absolut_solution(N);
-    for (int i = 0;i < N;i++)
-        absolut_solution[i] = 1;
-    std::vector<double> b = sparse_A*absolut_solution;
-    std::vector<double> x_0(N, 10); x_0[0] = 1;
-    double epsilon = 1e-5;
-    Sparse L0 = sparse_A.chol();
-    std::cout << "L0: " << std::endl;
-    L0.print();
-    std::cout << "L1: " << std::endl;
-    L0.transpose().print();
-    auto solution_pcg_pred = pcg_pred(sparse_A, b, x_0, epsilon, L0);
-    std::cout <<"solution_pcg_pred: ";
-    print(solution_pcg_pred);
-    auto  solution_pcg = pcg(sparse_A, b, x_0, epsilon);
-    std::cout <<"solution_pcg: ";
-    print(solution_pcg);
+double accurate_solution_example(double x, double y)//for values only on edge
+{
+    return sin(x) * cos(y);
+}
+
+int main()
+{
+    size_t N = 30;
+    Sparse S = five_diag(N);
+    double A = 0;
+    double B = M_PI/10;
+    std::vector<double> x_0(N * N, 0); x_0[0] = 1;
+    double eps = 0.1;
+    double droptol = 0.1;
+    Sparse L1 = S.chol();
+    Sparse L2 = S.ichol();
+    Sparse L3 = S.chol(droptol);
+    std::vector<double> solver0, solver1, solver2, solver3;
+    double mistake0, mistake1, mistake2, mistake3;
+    std::vector<double> accurate = u(A,B,N,&accurate_solution_example);
+    for(int i =0; i < 5; i++)
+    {
+        solver0 = solve_poisson_equation(S,A,B,N,x_0,eps,
+                                              &function_example, &accurate_solution_example);
+        solver1 = solve_poisson_equation_with_precondition(S,L1,A,B,N,x_0,eps,
+                                         &function_example, &accurate_solution_example);
+        solver2 = solve_poisson_equation_with_precondition(S,L2,A,B,N,x_0,eps,
+                                                           &function_example, &accurate_solution_example);
+        solver3 = solve_poisson_equation_with_precondition(S,L3,A,B,N,x_0,eps,
+                                                           &function_example, &accurate_solution_example);
+
+        mistake0 = norm(sub(accurate, solver0));
+        mistake1 = norm(sub(accurate, solver1));
+        mistake2 = norm(sub(accurate, solver2));
+        mistake3 = norm(sub(accurate, solver3));
+        std::cout << "i: " << mistake0 <<", "<< mistake1 <<", "<< mistake2 <<", "<< mistake3 <<std::endl;
+        eps/=10;
+    }
+
     return 0;
 }

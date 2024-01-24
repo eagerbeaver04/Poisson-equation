@@ -3,6 +3,7 @@
 #include "List.h"
 #include <vector>
 #include <cmath>
+#include <functional>
 
 class Sparse {
 private:
