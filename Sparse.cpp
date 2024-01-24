@@ -221,69 +221,60 @@ void Sparse::find_by_column(Iterator &begin, Iterator &end, Iterator &it, size_t
     }
 }
 
-std::vector<double> Sparse::gauss_down(const std::vector<double>& b)
-{
+std::vector<double> Sparse::gauss_down(const std::vector<double> &b) {
     std::vector<double> solution(size);
-    if(size != b.size())
-    {
+    if (size != b.size()) {
         std::cerr << "Different size " << std::endl;
         return solution;
     }
     double val;
-    Iterator begin,rend,it;
-    for(size_t i =0; i< size; i++)
-    {
-        val=0;
+    Iterator begin, rend, it;
+    for (size_t i = 0; i < size; i++) {
+        val = 0;
         begin = rows[i]->begin();
         rend = rows[i]->rend();
-        for(it = begin; it!= rend; it++)
-            val+=it->get_value() * solution[it->get_column()];
-        if(!it.is_null())
-            solution[i] = (b[i] - val)/ it->get_value();
+        for (it = begin; it != rend; it++)
+            val += it->get_value() * solution[it->get_column()];
+        if (!it.is_null())
+            solution[i] = (b[i] - val) / it->get_value();
     }
     return solution;
 }
 
-std::vector<double> Sparse::gauss_up(const std::vector<double>& b)
-{
+std::vector<double> Sparse::gauss_up(const std::vector<double> &b) {
     std::vector<double> solution(size);
-    if(size != b.size())
-    {
+    if (size != b.size()) {
         std::cerr << "Different size " << std::endl;
         return solution;
     }
     double val;
-    Iterator begin,end,it,it2;
-    for(int i = size-1; i>=0; i--)
-    {//?????????????????????????/
-        val=0;
+    Iterator begin, end, it, it2;
+    for (int i = size - 1; i >= 0; i--) {//?????????????????????????/
+        val = 0;
         begin = rows[i]->begin();
-        it2 = begin; it2++;
+        it2 = begin;
+        it2++;
         end = rows[i]->end();
-        for(it = it2; it!= end; it++)
-            val+=it->get_value() * solution[it->get_column()];
-        if(!begin.is_null())
-            solution[i] = (b[i] - val)/ begin->get_value();
+        for (it = it2; it != end; it++)
+            val += it->get_value() * solution[it->get_column()];
+        if (!begin.is_null())
+            solution[i] = (b[i] - val) / begin->get_value();
     }
     return solution;
 }
 
-std::vector<double> Sparse::covert_to_vector()
-{
+std::vector<double> Sparse::covert_to_vector() {
     size_t vec_size = std::pow(size, 2);
     std::vector<double> vec(vec_size);
-    Iterator begin ,end, it1;
-    size_t k=0;
+    Iterator begin, end, it1;
+    size_t k = 0;
     size_t current_column;
-    for(size_t i=0; i < size; i++)
-    {
+    for (size_t i = 0; i < size; i++) {
         begin = rows[i]->begin();
         end = rows[i]->end();
-        current_column =0;
-        for(it1 = begin; it1!=end;it1++)
-        {
-            for(size_t j =current_column+1; j < it1->get_column(); j++)
-            {
+        current_column = 0;
+        for (it1 = begin; it1 != end; it1++) {
+            for (size_t j = current_column + 1; j < it1->get_column(); j++) {
                 vec[k] = 0;
                 k++;
             }

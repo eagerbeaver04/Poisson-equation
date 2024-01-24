@@ -16,12 +16,18 @@ void Node::print_all(size_t size) {
         std::cout << double() << " ";
 }
 
-void Node::print() const
-{
+void Node::print() const {
     std::cout << value << " ";
 }
 
-void Node::add(size_t column_, double data, Node*& tail) {
+Node *Node::get_last() {
+    auto node = this;
+    while (node->next)
+        node = node->next.get();
+    return node;
+}
+
+void Node::add(size_t column_, double data, Node *&tail) {
     Node *tmp = this;
     Node *tmp_next = next.get();
     if (column == 0 && column_ == 0)
@@ -37,14 +43,15 @@ void Node::add(size_t column_, double data, Node*& tail) {
                 return;
             }
             auto newNode = std::make_unique<Node>(column_, data);
+            newNode->next = std::move(tmp->next);
             tmp->next = std::move(newNode);
+            tail = get_last();
             return;
         }
         tmp = tmp->next.get();
         tmp_next = tmp->next.get();
     }
-    if (column_ == column)
-    {
+    if (column_ == column) {
         tmp->value += data;
         return;
     }
@@ -53,39 +60,32 @@ void Node::add(size_t column_, double data, Node*& tail) {
     tail = tmp->next.get();
 }
 
-void Node::get_next(Iterator &it)
-{
-    Node* tmp = nullptr;
-    if(next)
+void Node::get_next(Iterator &it) {
+    Node *tmp = nullptr;
+    if (next)
         tmp = next.get();
     it.setValue(tmp);
 }
 
-Iterator Node::create_begin_iterator()
-{
+
+Iterator Node::create_begin_iterator() {
     return Iterator(this);
 }
 
-Iterator Node::create_rend_iterator()
-{
+Iterator Node::create_rend_iterator() {
     return Iterator(nullptr);
 }
 
-Iterator Node::create_end_iterator()
-{
-    auto node = this;
-    while(node->next)
-        node = node->next.get();
-    return Iterator(node);
+Iterator Node::create_end_iterator() {
+
+    return Iterator(get_last());
 }
 
-void Node::reset_after_this()
-{
+void Node::reset_after_this() {
     next.reset();
     next = nullptr;
 }
 
-void Iterator::reset_after_this()
-{
+void Iterator::reset_after_this() {
     ptr->reset_after_this();
 }

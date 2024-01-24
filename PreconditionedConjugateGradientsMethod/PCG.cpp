@@ -1,8 +1,7 @@
 #include "PCG.h"
 
-vector gauss(Sparse &L, Sparse &Lt, const vector &b)
-{
-    return Lt.gauss_up( L.gauss_down(b));
+vector gauss(Sparse &L, Sparse &Lt, const vector &b) {
+    return Lt.gauss_up(L.gauss_down(b));
 }
 
 vector pcg(const Sparse &A, const vector &b,
@@ -15,8 +14,7 @@ vector pcg(const Sparse &A, const vector &b,
     double beta = 0;
     double mistake = epsilon + 1;
     int k = 0;
-    while (mistake > epsilon)
-    {
+    while (mistake > epsilon) {
         q = A * p;
         alpha = scalar_mul(eps, p) / scalar_mul(q, p);
         x = sum(x, mul(p, alpha));

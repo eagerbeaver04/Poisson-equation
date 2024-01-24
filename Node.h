@@ -11,6 +11,7 @@ private:
     size_t column;
     double value;
     std::unique_ptr<Node> next;
+    Node* get_last();
 public:
     Node() : column(), value(), next(nullptr) {};
 

@@ -1,7 +1,6 @@
 #include "Sparse.h"
 
-Sparse Sparse::ichol()
-{
+Sparse Sparse::ichol() {
     size_t n = size;
     Sparse new_sparse(*this);
     Iterator it1, it2, itJ, begin1, end1, begin2, end2;
@@ -20,7 +19,7 @@ Sparse Sparse::ichol()
             end2 = new_sparse.rows[i]->end();
 
             find_by_column(begin2, end2, it1, k);
-            if(!it1.is_null())
+            if (it1 != end2)
                 it1->get_value() /= val;
         }
 
@@ -56,8 +55,7 @@ Sparse Sparse::ichol()
     return new_sparse;
 }
 
-Sparse Sparse::chol()
-{
+Sparse Sparse::chol() {
     size_t n = size;
     Sparse new_sparse(*this);
     Iterator it1, it2, itJ, begin1, end1, begin2, end2;
@@ -72,13 +70,12 @@ Sparse Sparse::chol()
         val = sqrt(it1->get_value());
         it1->get_value() = val;
 
-        for (size_t i = k + 1; i < size; i++)
-        {
+        for (size_t i = k + 1; i < size; i++) {
             begin2 = new_sparse.rows[i]->begin();
             end2 = new_sparse.rows[i]->end();
 
             find_by_column(begin2, end2, it1, k);
-            if(!it1.is_null())
+            if (it1 != end2)
                 it1->get_value() /= val;
         }
 
@@ -118,8 +115,7 @@ Sparse Sparse::chol()
     return new_sparse;
 }
 
-Sparse Sparse::chol(double droptol)
-{
+Sparse Sparse::chol(double droptol) {
     size_t n = size;
     Sparse new_sparse(*this);
     Iterator it1, it2, itJ, begin1, end1, begin2, end2;
@@ -139,7 +135,7 @@ Sparse Sparse::chol(double droptol)
             end2 = new_sparse.rows[i]->end();
 
             find_by_column(begin2, end2, it1, k);
-            if(!it1.is_null())
+            if (it1 != end2)
                 it1->get_value() /= val;
         }
 
