@@ -86,6 +86,3 @@ void Node::reset_after_this() {
     next = nullptr;
 }
 
-void Iterator::reset_after_this() {
-    ptr->reset_after_this();
-}

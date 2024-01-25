@@ -11,7 +11,9 @@ private:
     size_t column;
     double value;
     std::unique_ptr<Node> next;
-    Node* get_last();
+
+    Node *get_last();
+
 public:
     Node() : column(), value(), next(nullptr) {};
 
@@ -26,15 +28,15 @@ public:
 
     double get_value() const { return value; }
 
-    double& get_value() { return value; }
+    double &get_value() { return value; }
 
     void print_all(size_t size);
 
     void print() const;
 
-    void add(size_t column_, double data, Node*& tail);
+    void add(size_t column_, double data, Node *&tail);
 
-    void get_next(Iterator& it);
+    void get_next(Iterator &it);
 
     Iterator create_begin_iterator();
 
@@ -45,14 +47,13 @@ public:
     void reset_after_this();
 };
 
-class Iterator
-{
+class Iterator {
 private:
     using iterator_category = std::forward_iterator_tag;
     using difference_type = std::ptrdiff_t;
     using value_type = Node;
-    using pointer = Node*;
-    using reference = Node&;
+    using pointer = Node *;
+    using reference = Node &;
 
     pointer ptr;
     // There are raw pointers because instance of Iterator class does not manage objects.
@@ -60,19 +61,43 @@ private:
     //Also these fields are private and this fact prohibit extern access.
 
     void next();
+
 public:
     explicit Iterator(pointer ptr_) : ptr(ptr_) {};
+
     Iterator() : ptr(nullptr) {};
-    Iterator(const Iterator& it) : ptr(it.ptr) {};
-    void setValue(Node* node) { ptr = node; };
+
+    Iterator(const Iterator &it) : ptr(it.ptr) {};
+
+    void setValue(Node *node) { ptr = node; };
+
     reference operator*() { return *ptr; };
-    pointer operator ->() { return ptr; };
-    Iterator& operator++ () { next(); return *this; };
-    Iterator operator++(int i) { Iterator tmp = *this; ++(*this); return tmp; };
-    Iterator& operator =(const Iterator& it) { ptr = it.ptr; return *this; }
-    friend bool operator == (const Iterator& a, const Iterator& b) { return (a.ptr == b.ptr); };
-    friend bool operator != (const Iterator& a, const Iterator& b) { return (a.ptr != b.ptr); };
-    bool is_null() {return ptr == nullptr;}
+
+    pointer operator->() { return ptr; };
+
+    Iterator &operator++() {
+        next();
+        return *this;
+    };
+
+    Iterator operator++(int i) {
+        Iterator tmp = *this;
+        ++(*this);
+        return tmp;
+    };
+
+    Iterator &operator=(const Iterator &it) {
+        ptr = it.ptr;
+        return *this;
+    }
+
+    friend bool operator==(const Iterator &a, const Iterator &b) { return (a.ptr == b.ptr); };
+
+    friend bool operator!=(const Iterator &a, const Iterator &b) { return (a.ptr != b.ptr); };
+
+    bool is_null() { return ptr == nullptr; }
+
     void print();
+
     void reset_after_this();
 };

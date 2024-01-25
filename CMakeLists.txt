@@ -21,4 +21,5 @@ add_executable(PoissonEquation
         PoissonEquation/PoissonEquation.h
         PoissonEquation/PoissonEquation.cpp
         Matrix.h
-        Matrix.cpp)
+        Matrix.cpp
+)

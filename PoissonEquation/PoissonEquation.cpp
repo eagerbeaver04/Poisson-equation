@@ -16,11 +16,11 @@ Sparse F(double A, double B, size_t N,
             value -= h * h * function(x, y);
             if (i == 1)
                 value += accurate_solution(x - h, y);
-            if (i == N)
+            else if (i == N)
                 value += accurate_solution(x + h, y);
             if (j == 1)
                 value += accurate_solution(x, y - h);
-            if (j == N)
+            else if (j == N)
                 value += accurate_solution(x, y + h);
             new_sparse.add(i - 1, j - 1, value);
         }
