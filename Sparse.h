@@ -51,7 +51,7 @@ public:
 
     std::vector<double> gauss_down(const std::vector<double>& b);// for lower triangular matrix
     std::vector<double> gauss_up(const std::vector<double>& b);// for upper triangular matrix
-    std::vector<double> covert_to_vector();
+    std::vector<double> convert_to_vector();
 };
 
 Sparse vec_mul(const std::vector<double>& a,const std::vector<double>& b);

@@ -263,7 +263,7 @@ std::vector<double> Sparse::gauss_up(const std::vector<double> &b) {
     return solution;
 }
 
-std::vector<double> Sparse::covert_to_vector() {
+std::vector<double> Sparse::convert_to_vector() {
     size_t vec_size = std::pow(size, 2);
     std::vector<double> vec(vec_size);
     Iterator begin, end, it1;

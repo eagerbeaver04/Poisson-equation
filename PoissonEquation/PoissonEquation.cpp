@@ -78,7 +78,7 @@ std::vector<std::vector<double>> reverse(const std::vector<double> &a) {
 std::vector<double> f(double A, double B, size_t N,
                       const std::function<double(double, double)> &function,
                       const std::function<double(double, double)> &accurate_solution) {
-    return F(A, B, N, function, accurate_solution).covert_to_vector();
+    return F(A, B, N, function, accurate_solution).convert_to_vector();
 }
 
 std::vector<double> u(double A, double B, size_t N,

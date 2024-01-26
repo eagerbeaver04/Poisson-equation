@@ -42,6 +42,7 @@ int main() {
         mistake1 = norm(sub(accurate, solver1));
         mistake2 = norm(sub(accurate, solver2));
         mistake3 = norm(sub(accurate, solver3));
+
         std::cout << "i: " << i << ":" << mistake0 << ", " << mistake1 << ", " << mistake2 << ", " << mistake3
                   << std::endl;
         eps /= 10;
