@@ -45,18 +45,22 @@ void Sparse::clear() {
 }
 
 Sparse &Sparse::operator=(const Sparse &A) {
-    clear();
-    size = A.size;
-    for (size_t i = 0; i < size; i++)
-        rows.push_back(std::make_unique<List>(*A.rows[i]));
+    if(&A != this) {
+        clear();
+        size = A.size;
+        for (size_t i = 0; i < size; i++)
+            rows.push_back(std::make_unique<List>(*A.rows[i]));
+    }
     return *this;
 }
 
 Sparse &Sparse::operator=(Sparse &&A) noexcept(true) {
-    clear();
-    size = A.size;
-    for (size_t i = 0; i < size; i++)
-        rows.emplace_back(std::move(A.rows[i]));
+    if(&A != this) {
+        clear();
+        size = A.size;
+        for (size_t i = 0; i < size; i++)
+            rows.emplace_back(std::move(A.rows[i]));
+    }
     return *this;
 }
 
