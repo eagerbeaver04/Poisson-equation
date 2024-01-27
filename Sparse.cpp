@@ -268,7 +268,7 @@ std::vector<double> Sparse::gauss_up(const std::vector<double> &b) {
 }
 
 std::vector<double> Sparse::convert_to_vector() {
-    size_t vec_size = std::pow(size, 2);
+    size_t vec_size = size * size;
     std::vector<double> vec(vec_size);
     Iterator begin, end, it1;
     size_t k = 0;
